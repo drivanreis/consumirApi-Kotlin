@@ -1,11 +1,10 @@
-package br.com.androidintro.trybeclima
+package br.com.androidintro.trybeclima.data.repository
 
-import br.com.androidintro.trybeclima.interfaces.OpenWeatherInterface
+import br.com.androidintro.trybeclima.data.repository.interfaces.OpenWeatherInterface
 import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
-import retrofit2.create
 
-object OpenWeatherService {
+object OpenWeatherServiceObject {
 
     val instance: OpenWeatherInterface by lazy {
         val retrofit = Retrofit.Builder()

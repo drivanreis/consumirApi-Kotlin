@@ -1,6 +1,6 @@
-package br.com.androidintro.trybeclima.interfaces
+package br.com.androidintro.trybeclima.data.repository.interfaces
 
-import br.com.androidintro.trybeclima.models.CurrentWeatherData
+import br.com.androidintro.trybeclima.data.datasource.models.CurrentWeatherData
 import retrofit2.Call
 import retrofit2.Response
 import retrofit2.http.GET

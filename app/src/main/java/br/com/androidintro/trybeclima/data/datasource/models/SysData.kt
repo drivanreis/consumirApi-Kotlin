@@ -1,4 +1,4 @@
-package br.com.androidintro.trybeclima.models
+package br.com.androidintro.trybeclima.data.datasource.models
 
 data class SysData(
     val type: Int,

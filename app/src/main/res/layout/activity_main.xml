@@ -8,7 +8,7 @@
     android:layout_height="match_parent"
     android:orientation="vertical"
     android:padding="10dp"
-    tools:context=".MainActivity">
+    tools:context=".ui.views.activites.MainActivity">
 
     <com.google.android.material.textfield.TextInputLayout
         android:id="@+id/main_city_name_input_Layout"
@@ -51,5 +51,11 @@
         android:textStyle="bold"
         android:textAlignment="center"
         android:text="Fortaleza"/>
+
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/main_days_recycler_view"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        tools:listitem="@layout/item_list_days_weather"/>
 
 </LinearLayout>

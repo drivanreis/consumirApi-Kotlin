@@ -1,4 +1,4 @@
-package br.com.androidintro.trybeclima.models
+package br.com.androidintro.trybeclima.data.datasource.models
 
 import android.hardware.biometrics.BiometricManager.Strings
 
