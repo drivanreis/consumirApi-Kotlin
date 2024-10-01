@@ -8,13 +8,17 @@ import android.view.inputmethod.InputMethodManager
 import android.widget.EditText
 import android.widget.TextView
 import android.widget.Toast
+import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
+import androidx.databinding.DataBindingUtil
 import androidx.recyclerview.widget.RecyclerView
 import androidx.recyclerview.widget.StaggeredGridLayoutManager
 import br.com.androidintro.trybeclima.R
 import br.com.androidintro.trybeclima.data.datasource.models.DayWeather
 import br.com.androidintro.trybeclima.data.repository.OpenWeatherServiceObject
+import br.com.androidintro.trybeclima.databinding.ActivityMainBinding
 import br.com.androidintro.trybeclima.ui.adapters.DayWeatherAdapter
+import br.com.androidintro.trybeclima.ui.viewmodels.MainActivityViewModel
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import com.google.android.material.textfield.TextInputLayout
 import kotlinx.coroutines.CoroutineScope
@@ -25,87 +29,96 @@ import retrofit2.HttpException
 
 class MainActivity : AppCompatActivity() {
 
-    private val cityTempTextView : TextView by lazy { findViewById(R.id.main_city_temp_text_view) }
-    private val cityNameEditText : EditText by lazy { findViewById(R.id.main_city_name_edit_text) }
-    private val cityNameTextView : TextView by lazy { findViewById(R.id.main_city_name_text_view) }
-    private val cityNameInputLayout : TextInputLayout by lazy { findViewById(R.id.main_city_name_input_Layout) }
+    private lateinit var birding: ActivityMainBinding
+    private val mainActivityViewModel: MainActivityViewModel by viewModels()
+
+//    private val cityTempTextView : TextView by lazy { findViewById(R.id.main_city_temp_text_view) }
+//    private val cityNameEditText : EditText by lazy { findViewById(R.id.main_city_name_edit_text) }
+//    private val cityNameTextView : TextView by lazy { findViewById(R.id.main_city_name_text_view) }
+//    private val cityNameInputLayout : TextInputLayout by lazy { findViewById(R.id.main_city_name_input_Layout) }
 
     private val dayRecyclerView: RecyclerView by lazy { findViewById(R.id.main_days_recycler_view) }
 
-    private val openWeatherService = OpenWeatherServiceObject.instance
+//    private val openWeatherService = OpenWeatherServiceObject.instance
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setContentView(R.layout.activity_main)
+//        setContentView(R.layout.activity_main)
 
-        cityNameTextView.text = "-"
+        birding = DataBindingUtil.setContentView(this, R.layout.activity_main)
 
-        cityNameInputLayout.setEndIconOnClickListener {
-            val imm = getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager
-            imm.hideSoftInputFromWindow(cityNameEditText.windowToken, 0)
+        birding.viewModel = mainActivityViewModel
+        birding.lifecycleOwner = this
 
-//            val progressDialog = showLoadingDialog(this)
 
-//            val openWeatherService = OpenWeatherServiceObject.instance
+//        cityNameTextView.text = "-"
 
-//            val citeName = cityNameEditText.text.toString()
-
-            Toast.makeText(baseContext,"Cidade: ${cityNameEditText.text.toString()}", Toast.LENGTH_LONG).show()
-
-            CoroutineScope(Dispatchers.IO).launch {
-                try {
-                    val responseOpenWeatherService = openWeatherService.getCurrentWeatherData(
-                        cityNameEditText.text.toString(),
-                        "0e3190d11a30259aed88ee2c3de8a9ef"
-                    )
-                    if (responseOpenWeatherService.isSuccessful) {
-                        withContext(Dispatchers.Main) {
-                            val weatherData = responseOpenWeatherService.body()!!
-//                    Log.i("Trybe-Clima-Request", "$weatherData")
-                            cityTempTextView.text = "${weatherData.main.temp.toInt()} ºC"
-                            cityNameTextView.text = weatherData.name
-                        }
-                    } else {
-                        MaterialAlertDialogBuilder(this@MainActivity)
-                            .setTitle("Trybe Clima")
-                            .setMessage("Erro de requisição: ${responseOpenWeatherService.message()}")
-                            .setCancelable(false)
-                            .setPositiveButton("OK") {dialog, _-> dialog.dismiss()}
-                            .show()
-                    }
-//                    progressDialog.dismiss()
-                } catch (e: HttpException) {
-                    Log.e("HttpException",e.message.toString())
-                }
-                catch (e: Exception) {
-                    Log.e("Corrotina",e.message.toString())
-                }
-            }
-
-//            val responseOpenWeatherService = openWeatherService.getCurrentWeatherData(
-//                cityNameEditText.text.toString(),
-//                "0e3190d11a30259aed88ee2c3de8a9ef"
-//            )
-
-//            callOpenWeatherService.enqueue(object : Callback<CurrentWeatherData> {
-//                override fun onResponse(
-//                    call: Call<CurrentWeatherData>,
-//                    response: Response<CurrentWeatherData>
-//                ) {
-//                    val weatherData = response.body()
+//        cityNameInputLayout.setEndIconOnClickListener {
+//            val imm = getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager
+//            imm.hideSoftInputFromWindow(cityNameEditText.windowToken, 0)
+//
+////            val progressDialog = showLoadingDialog(this)
+//
+////            val openWeatherService = OpenWeatherServiceObject.instance
+//
+////            val citeName = cityNameEditText.text.toString()
+//
+//            Toast.makeText(baseContext,"Cidade: ${cityNameEditText.text.toString()}", Toast.LENGTH_LONG).show()
+//
+//            CoroutineScope(Dispatchers.IO).launch {
+//                try {
+//                    val responseOpenWeatherService = openWeatherService.getCurrentWeatherData(
+//                        cityNameEditText.text.toString(),
+//                        "0e3190d11a30259aed88ee2c3de8a9ef"
+//                    )
+//                    if (responseOpenWeatherService.isSuccessful) {
+//                        withContext(Dispatchers.Main) {
+//                            val weatherData = responseOpenWeatherService.body()!!
 ////                    Log.i("Trybe-Clima-Request", "$weatherData")
-//                    if (weatherData != null) {
-//                        cityTempTextView.text = "${ weatherData.main.temp.toInt() } ºC"
-//                        cityNameTextView.text = weatherData.name
+//                            cityTempTextView.text = "${weatherData.main.temp.toInt()} ºC"
+//                            cityNameTextView.text = weatherData.name
+//                        }
+//                    } else {
+//                        MaterialAlertDialogBuilder(this@MainActivity)
+//                            .setTitle("Trybe Clima")
+//                            .setMessage("Erro de requisição: ${responseOpenWeatherService.message()}")
+//                            .setCancelable(false)
+//                            .setPositiveButton("OK") {dialog, _-> dialog.dismiss()}
+//                            .show()
 //                    }
+////                    progressDialog.dismiss()
+//                } catch (e: HttpException) {
+//                    Log.e("HttpException",e.message.toString())
 //                }
-//
-//                override fun onFailure(call: Call<CurrentWeatherData>, t: Throwable) {
-//                    Log.e("Trybe-Clima-Request","Ocorreu um erro durante a requisição: ${t.message}")
+//                catch (e: Exception) {
+//                    Log.e("Corrotina",e.message.toString())
 //                }
+//            }
 //
-//            })
-        }
+////            val responseOpenWeatherService = openWeatherService.getCurrentWeatherData(
+////                cityNameEditText.text.toString(),
+////                "0e3190d11a30259aed88ee2c3de8a9ef"
+////            )
+//
+////            callOpenWeatherService.enqueue(object : Callback<CurrentWeatherData> {
+////                override fun onResponse(
+////                    call: Call<CurrentWeatherData>,
+////                    response: Response<CurrentWeatherData>
+////                ) {
+////                    val weatherData = response.body()
+//////                    Log.i("Trybe-Clima-Request", "$weatherData")
+////                    if (weatherData != null) {
+////                        cityTempTextView.text = "${ weatherData.main.temp.toInt() } ºC"
+////                        cityNameTextView.text = weatherData.name
+////                    }
+////                }
+////
+////                override fun onFailure(call: Call<CurrentWeatherData>, t: Throwable) {
+////                    Log.e("Trybe-Clima-Request","Ocorreu um erro durante a requisição: ${t.message}")
+////                }
+////
+////            })
+//        }
 
         val daysWeather = listOf(
             DayWeather(

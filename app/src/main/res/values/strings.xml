@@ -1,3 +1,4 @@
 <resources>
     <string name="app_name">TrybeClima</string>
+    <string name="temp_with_one_dig">%.1f º</string>
 </resources>
